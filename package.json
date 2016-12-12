@@ -11,6 +11,8 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "eris": "^0.5.1",
+    "immutable": "^3.8.1",
+    "request": "^2.79.0",
     "twitter": "^1.6.0"
   }
 }
