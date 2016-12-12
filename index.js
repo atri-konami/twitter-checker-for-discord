@@ -10,10 +10,10 @@ Dclient.connect()
 .then(() => {
     Tclient.stream('statuses/filter', {follow: cred.twitter.users.values().join(',')}, (stream) => {
         stream.on('data', (tweet) => {
+            console.log(tweet);
             if (/shadowverse/i.test(tweet.text)) {
                 const text = `from: @${tweet.user.screen_name}\n${tweet.text}`;
                 Dclient.createMessage(cred.discord.channel_ids.information, text);
-                console.log(tweet);
             }
         });
 
