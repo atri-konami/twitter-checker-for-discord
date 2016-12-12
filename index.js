@@ -22,7 +22,9 @@ Dclient.on('messageCreate', (message) => {
     const isMentioned = Immutable.Seq(message.mentions)
             .some((user) => user.id == Dclient.user.id );
     if (isMentioned && !message.mentionEveryone) {
-        if (deckcode !== null) {
+        if (message.content == 'ping') {
+            Dclient.createMessage(message.channel.id, `<@${message.author.id}> pong`);
+        } else if (deckcode !== null) {
             shadow.getURLByDeckCode(deckcode[1])
                 .then((url) => {
                     Dclient.createMessage(message.channel.id, `<@${message.author.id}> ${url}`);
