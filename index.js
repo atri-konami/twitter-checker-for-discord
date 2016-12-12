@@ -41,8 +41,9 @@ Dclient.connect()
     Tclient.stream('statuses/filter', {follow: tids.join(',')}, (stream) => {
         stream.on('data', (tweet) => {
             console.log(tweet);
+            if (/^RT/.test(tweet.text) || /^@/.test(tweet.text)) return;
             if (/jcgjp/i.test(tweet.user.screen_name) && /shadowverse/i.test(tweet.text)
-                || /gameai_jp/i.test(tweet.user.screen_name) && !tweet.retweeted) {
+                || /gameai_jp/i.test(tweet.user.screen_name)) {
                 const text = `from: @${tweet.user.screen_name}\n${tweet.text}`;
                 Dclient.createMessage(cred.discord.channel_ids.information, text);
             }
