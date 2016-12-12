@@ -6,7 +6,7 @@ const shadow = require('./lib/shadowverse');
 const Immutable = require('immutable');
 
 let tids = [];
-for (let v in cred.twitter.users) tids.push(cread.twitter.users[v]);
+for (let v in cred.twitter.users) tids.push(cred.twitter.users[v]);
 
 const Dclient = new Eris(cred.discord.token);
 const Tclient = new Twitter(cred.twitter.auth);
