@@ -5,6 +5,9 @@ const cred = require('./credential.json');
 const shadow = require('./lib/shadowverse');
 const Immutable = require('immutable');
 
+let tids = [];
+for (let v in cred.twitter.users) tids.push(cread.twitter.users[v]);
+
 const Dclient = new Eris(cred.discord.token);
 const Tclient = new Twitter(cred.twitter.auth);
 
@@ -33,7 +36,7 @@ Dclient.on('messageCreate', (message) => {
 
 Dclient.connect()
 .then(() => {
-    Tclient.stream('statuses/filter', {follow: cred.twitter.users.values().join(',')}, (stream) => {
+    Tclient.stream('statuses/filter', {follow: tids.join(',')}, (stream) => {
         stream.on('data', (tweet) => {
             console.log(tweet);
             if (/jcgjp/i.test(tweet.user.screen_name) && /shadowverse/i.test(tweet.text)
