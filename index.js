@@ -18,19 +18,19 @@ Dclient.on('ready', () => {
 Dclient.on('messageCreate', (message) => {
     console.log(message);
     if (message.author.id == Dclient.user.id) return;
-    let deckcode = /deck_code=([a-zA-Z0-9]{4})/.exec(message.content);
+    let deckcode = /deck_code=([a-zA-Z0-9]{4})$/.exec(message.content);
     const isMentioned = Immutable.Seq(message.mentions)
             .some((user) => user.id == Dclient.user.id );
     if (isMentioned && !message.mentionEveryone) {
-        if (message.content == 'ping') {
-            Dclient.createMessage(message.channel.id, `<@${message.author.id}> pong`);
+        if (/ ping$/.test(message.content)) {
+            Dclient.createMessage(message.channel.id, `<@!${message.author.id}> pong`);
         } else if (deckcode !== null) {
             shadow.getURLByDeckCode(deckcode[1])
                 .then((url) => {
-                    Dclient.createMessage(message.channel.id, `<@${message.author.id}> ${url}`);
+                    Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${url}`);
                 });
         } else {
-            Dclient.createMessage(message.channel.id, `<@${message.author.id}> よくわかんないから殺す`);
+            Dclient.createMessage(message.channel.id, `<@!${message.author.id}> よくわかんないから殺す`);
         }
     } else {
     }
