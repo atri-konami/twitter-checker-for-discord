@@ -26,9 +26,10 @@ Dclient.on('messageCreate', (message) => {
             Dclient.createMessage(message.channel.id, `<@!${message.author.id}> pong`);
         } else if (deckcode !== null) {
             shadow.getURLByDeckCode(deckcode[1])
-                .then((url) => {
-                    Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${url}`);
-                });
+                .then(
+                    (url) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${url}`),
+                    (err) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> そんなものはない`)
+                );
         } else {
             Dclient.createMessage(message.channel.id, `<@!${message.author.id}> よくわかんないから殺す`);
         }
