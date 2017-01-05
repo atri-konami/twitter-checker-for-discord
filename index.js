@@ -27,7 +27,7 @@ Dclient.on('messageCreate', (message) => {
         } else if (deckcode !== null) {
             shadow.getURLByDeckCode(deckcode[1])
                 .then(
-                    (url) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${url}`),
+                    (data) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${data.link}\n${data.image}`),
                     (err) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> そんなものはない`)
                 );
         } else {
