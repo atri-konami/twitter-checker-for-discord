@@ -17,24 +17,51 @@ Dclient.on('ready', () => {
 
 Dclient.on('messageCreate', (message) => {
     console.log(message);
+
     if (message.author.id == Dclient.user.id) return;
     let deckcode = /deck_code=([a-zA-Z0-9]{4})$/.exec(message.content);
+    const ecommand = /^!(\w*)\s*(.*)/.exec(message.content);
+    console.log(ecommand);
     const isMentioned = Immutable.Seq(message.mentions)
             .some((user) => user.id == Dclient.user.id );
+
+    if (ecommand) {
+        let command = ecommand[1];
+        let args = ecommand[2].split(' ');
+        switch (command) {
+            case 'help':
+                const help =
+                    `Usage: ![command] [args...]\ncommand list:\n* help\n* ping\n* deck (!deck [deck code here])`;
+                Dclient.createMessage(message.channel.id, help);
+                break;
+            case 'ping':
+                Dclient.createMessage(message.channel.id, `pong`);
+                break;
+            case 'deck':
+                shadow.getURLByDeckCode(args[0])
+                    .then(
+                        (data) => Dclient.createMessage(message.channel.id, `${message.author.mention} ${data.link}\n${data.image}`),
+                        (err) => Dclient.createMessage(message.channel.id, `${message.author.mention} そんなものはない`)
+                    );
+                break;
+        }
+    }
+    /*
     if (isMentioned && !message.mentionEveryone) {
-        if (/ ping$/.test(message.content)) {
+        // mention
+        if (/ping$/.test(message.content)) {
             Dclient.createMessage(message.channel.id, `<@!${message.author.id}> pong`);
         } else if (deckcode !== null) {
             shadow.getURLByDeckCode(deckcode[1])
                 .then(
-                    (data) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> ${data.link}\n${data.image}`),
-                    (err) => Dclient.createMessage(message.channel.id, `<@!${message.author.id}> そんなものはない`)
+                    (data) => Dclient.createMessage(message.channel.id, `${message.author.mention} ${data.link}\n${data.image}`),
+                    (err) => Dclient.createMessage(message.channel.id, `${message.author.mention} そんなものはない`)
                 );
         } else {
-            Dclient.createMessage(message.channel.id, `<@!${message.author.id}> よくわかんないから殺す`);
+            Dclient.createMessage(message.channel.id, `${message.author.mention} よくわかんないから殺す`);
         }
-    } else {
     }
+    */
 });
 
 Dclient.connect()
